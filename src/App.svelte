@@ -55,7 +55,7 @@
     currentSong = data.d.song.title;
     requester = data.d.requester ? data.d.requester : "Automatic";
     listeners = data.d.listeners;
-    lastPlayed = data.d.lastPlayed
+    lastPlayed = data.d.lastPlayed;
   };
 </script>
 <svelte:head>
@@ -63,11 +63,11 @@
 </svelte:head>
 <TailwindCss />
 <main>
-  <div class="h-screen  flex items-center bg-gray-100 justify-center">
+  <div class="lg:h-screen  lg:flex items-center bg-gray-100 justify-center">
     <div class="drop-shadow-lg p-4 bg-white rounded">
       <div
         id="connection"
-        class="bg-green-500 p-1 text-white font-bold border-8 border-black text-center text-4xl"
+        class="bg-green-500 p-1 text-white font-bold border-8 border-black text-center lg:text-4xl"
       >
         Thanks for using Listen.moe!
       </div>
