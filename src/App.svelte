@@ -9,7 +9,7 @@
   let currentSong = "None";
   let listeners = 0;
   let requester = "Auto";
-
+  let lastPlayed = []
   let isPlaying =
     fallback.currentTime > 0 &&
     !fallback.paused &&
@@ -55,6 +55,7 @@
     currentSong = data.d.song.title;
     requester = data.d.requester ? data.d.requester : "Automatic";
     listeners = data.d.listeners;
+    lastPlayed = data.d.lastPlayed
   };
 </script>
 <svelte:head>
@@ -62,23 +63,23 @@
 </svelte:head>
 <TailwindCss />
 <main>
-  <div class="h-screen flex items-center bg-gray-100 justify-center">
+  <div class="h-screen  flex items-center bg-gray-100 justify-center">
     <div class="drop-shadow-lg p-4 bg-white rounded">
       <div
         id="connection"
-        class="bg-green-500 p-1 text-white font-bold border-4 border-black text-center text-lg"
+        class="bg-green-500 p-1 text-white font-bold border-8 border-black text-center text-4xl"
       >
         Thanks for using Listen.moe!
       </div>
 
-      <div class="font-bold text-lg">
+      <div class="font-bold text-2xl">
         Listen.moe - It's time to ditch other radios.
       </div>
-      <div class="bg-zinc-800 text-white p-1 text-center">
+      <div class="bg-zinc-800 text-white p-1 text-center text-xl">
         Now playing:
-        <div class="italic font-bold text-center">
+        <div class="italic font-bold text-center ">
           <!-- svelte-ignore a11y-distracting-elements -->
-          <marquee id="currentSong">{currentSong}</marquee>
+          <div class="marquee" id="currentSong">{currentSong}</div>
         </div>
         <div>
           <span id="requester" class="text-yellow-500 justify-left"
@@ -90,16 +91,7 @@
           Vibin' now!
         </div>
       </div>
-      <div class="flex text-center">
-        <div hidden class="" id="audio">
-          Looks like you are using opera! For some reason the player breaks in
-          Opera, please use this:
-          <div>
-            <audio id="audioPlayer">
-              <source src="https://listen.moe/fallback" type="audio/mpeg" />
-            </audio>
-          </div>
-        </div>
+      <div class="flex text-center text-xl">
         {#if paused}
           <div
             id="play"
@@ -124,6 +116,16 @@
         {/if}
         {/if}
       </div>
+      <div class="">
+        <div class="font-bold text-2xl">Last Songs</div>
+        <div class="space-y-2">
+          {#each lastPlayed as song}
+          <div class="flex bg-zinc-700 text-white w-full items-center shadow-lg hover:scale-105 transition-all duration-300">
+            <img src="https://www.piodeportes.com/wp-content/uploads/2016/03/hulk.jpg" class="w-16 object-cover h-16" alt="" />
+            <div class="mx-3"><span class="font-bold">{song.title}</span> by <span class="italic font-thin">{song.artists[0].name}</span></div>
+          </div>
+        {/each}
+      </div>
     </div>
   </div>
 </main>
@@ -133,4 +135,52 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
+        .marquee {
+            overflow: hidden;
+            position: relative;
+        }
+        .marquee div {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            line-height: 50px;
+            text-align: center;
+            -moz-transform: translateX(100%);
+            -webkit-transform: translateX(100%);
+            transform: translateX(100%);
+            -moz-animation: scroll-left 2s linear infinite;
+            -webkit-animation: scroll-left 2s linear infinite;
+            animation: scroll-left 20s linear infinite;
+        }
+        @-moz-keyframes scroll-left {
+            0% {
+                -moz-transform: translateX(100%);
+            }
+            100% {
+                -moz-transform: translateX(-100%);
+            }
+        }
+        
+        @-webkit-keyframes scroll-left {
+            0% {
+                -webkit-transform: translateX(100%);
+            }
+            100% {
+                -webkit-transform: translateX(-100%);
+            }
+        }
+        
+        @keyframes scroll-left {
+            0% {
+                -moz-transform: translateX(100%);
+                -webkit-transform: translateX(100%);
+                transform: translateX(100%);
+            }
+            100% {
+                -moz-transform: translateX(-100%);
+                -webkit-transform: translateX(-100%);
+                transform: translateX(-100%);
+            }
+        }
 </style>
